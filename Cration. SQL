@@ -1,0 +1,63 @@
+CREATE DATABASE CompanyDB;
+GO
+
+USE CompanyDB;
+GO
+
+-- Create the tables
+CREATE TABLE Suppliers (
+    SupplierID INT PRIMARY KEY,
+    SupplierName NVARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Categories (
+    CategoryID INT PRIMARY KEY,
+    CategoryName NVARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Products (
+    ProductID INT PRIMARY KEY,
+    ProductName NVARCHAR(255) NOT NULL,
+    SupplierID INT,
+    CategoryID INT,
+	Price DECIMAL,
+    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID),
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
+);
+
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    FirstName NVARCHAR(255) NOT NULL,
+	LastName NVARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName NVARCHAR(255) NOT NULL,
+	LastName NVARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Shippers (
+    ShipperID INT PRIMARY KEY,
+    ShipperName NVARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT,
+    EmployeeID INT,
+    OrderDate DATE,
+    ShipperID INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    FOREIGN KEY (ShipperID) REFERENCES Shippers(ShipperID)
+);
+
+CREATE TABLE OrderDetails (
+    OrderDetailID INT PRIMARY KEY,
+    OrderID INT,
+    ProductID INT,
+    Quantity INT,
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
